@@ -1,0 +1,60 @@
+version: 2.1
+
+orbs:
+  slack: circleci/slack@4.4.2
+
+jobs:
+  # alpine イメージで slack から通知を送るための例
+  slack_test:
+    docker:
+      - image: docker:latest
+    steps:
+      - checkout
+      - run:
+          # alpine イメージはパッケージが足りんので導入する
+          name: package install for slack
+          command: apk add bash jq curl
+      - run:
+          # ここらへんでデプロイとかする
+          name: echo test
+          command: echo "test"
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: success_tagged_deploy_1
+
+  test_api:
+    docker:
+      - image: circleci/node:latest
+    steps:
+      - checkout
+      - run:
+          name: install tester
+          command: sudo npm install
+      - run:
+          name: API test
+          command: npm test
+      - slack/notify:
+          event: fail
+          template: basic_fail_1
+      - slack/notify:
+          event: pass
+          template: basic_success_1
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - slack_test:
+          context:
+            - SLACK
+      - test_lambda:
+          requires:
+            - slack_test
+          context:
+            - SLACK
+          filters:
+            branches:
+              only: main

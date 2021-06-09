@@ -1,0 +1,24 @@
+{
+  "name": "circleci-slack",
+  "version": "1.0.0",
+  "description": "",
+  "main": "api.test.js",
+  "scripts": {
+    "test": "mocha api.test.js --requrie should"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Good-Bye-Univ-life/slack-circleci.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Good-Bye-Univ-life/slack-circleci/issues"
+  },
+  "homepage": "https://github.com/Good-Bye-Univ-life/slack-circleci#readme",
+  "dependencies": {
+    "mocha": "^9.0.0",
+    "should": "^13.2.3",
+    "supertest": "^6.1.3"
+  }
+}
